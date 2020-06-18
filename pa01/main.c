@@ -45,7 +45,7 @@ void generate_test_array(int *arr, int size, int max)
 
         insert = max + 1; // reset insert every time
         // generate the random number to be added
-        while (insert >= max || insert <= 0) {
+        while (insert >= max || insert < 0) {
             insert = rand();
         }
 
