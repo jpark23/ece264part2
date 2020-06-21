@@ -64,7 +64,23 @@ void generate_test_array(int *arr, int size, int max)
  */
 void selection_sort(int *arr, int size)
 {
-    // TODO
+    int lcv1, lcv2, current;
+    int temp;
+
+    // Control the unsorted array window
+    for (lcv1 = 0; lcv1 < size - 1; lcv1++) {
+
+        // comb through and find the smallest element
+        current = lcv1;
+        for (lcv2 = lcv1 + 1; lcv2 < size; lcv2++) {
+            if (arr[lcv2] < arr[current]) // comparing the two elements
+                current = lcv2; // set a new smallest element
+        }
+
+        temp = arr[current];
+        arr[current] = arr[lcv1];
+        arr[lcv1] = temp;
+    }
 }
 
 
