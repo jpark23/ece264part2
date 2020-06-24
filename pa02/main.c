@@ -7,7 +7,7 @@
 #include <string.h>
 
 // Comment out the next line if you do not wish to do the extra credit
-#define EXTRA_CREDIT
+//#define EXTRA_CREDIT
 
 
 /*
@@ -18,7 +18,20 @@
  */
 int count_chars(FILE *fptr)
 {
-    // TODO
+    int current;
+    int charcount = 0;
+
+    while ((current = fgetc(fptr)) != EOF)
+      if ( (current != ' ')  && 
+	   (current != '\n') && 
+	   (current != '\t') &&
+	   (current != '\v') &&
+	   (current != '\f') &&
+	   (current != '\r') )
+          charcount++;
+
+    return charcount; 
+
 }
 
 
