@@ -43,7 +43,15 @@ int count_chars(FILE *fptr)
  */
 int count_words(FILE *fptr)
 {
-    // TODO
+  int current;
+  int wordcount = 0;
+
+  while ((current = fgetc(fptr)) != EOF)
+    if (current == ' ')
+      wordcount++;
+
+  return wordcount;
+  
 }
 
 
