@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <ctype.h> // to use isalnum() to check for alphanumeric characters
 
 // Comment out the next line if you do not wish to do the extra credit
 //#define EXTRA_CREDIT
@@ -20,22 +21,65 @@ int count_chars(FILE *fptr)
 {
     int current;
     int charcount = 0;
+    while (1) {
+        current = fgetc(fptr);
+        
+        // check if EOF
+        if (feof(fptr)) {
+            break;
+        }
 
-    while ((current = fgetc(fptr)) != EOF)
-      if ( (current != ' ')  && 
-	   (current != '\n') && 
-	   (current != '\t') &&
-	   (current != '\v') &&
-	   (current != '\f') &&
-	   (current != '\r') )
-          charcount++;
-
+        if (!isspace(current)) {
+            if ( (current != ' ')  && 
+	           (current != '\n') && 
+	           (current != '\t') &&
+	           (current != '\v') &&
+	           (current != '\f') &&
+	           (current != '\r') ) {
+               charcount++;   
+            }
+        }
+    } /*
+    while ( ((current = fgetc(fptr)) != EOF) && !isspace(current) ) {
+       if ( (current != ' ')  && 
+	        (current != '\n') && 
+	        (current != '\t') &&
+	        (current != '\v') &&
+	        (current != '\f') &&
+	        (current != '\r') ) {
+            charcount++;   
+            }
+    }*/
+    rewind(fptr);
     return charcount; 
 
 }
 
 
-/*
+int is_non_an(int checkchar) { // function to test for alphanumeric characters
+    // make an char array that will check for specific cases
+    char specs[] = {' ', '.', '?', '!', '"', '/', ','}; // add as necessary
+    int alphanum = (checkchar == '-') || isalnum(checkchar); // alphanumeric check
+
+    // inital loop to check for above specific characters
+    for (int check = 0; check < 7; check++) {
+        if (checkchar == specs[check]) {
+            return 1; // meaning that it is NOT an alphanumeric character
+        }
+    }
+
+    // check if alphanumeric
+    if (alphanum) {
+        return 0; // the tested character IS alphanumeric
+    }
+
+    else
+        return 1; // default case is yes it's not alphanumeric
+
+}
+
+
+ /*
  *  Synopsis        [Count the number of words in a file.]
  *  Return          [Returns the word count.]
  *  Side effects    [None (the initial file cursor position should be the same when
@@ -43,16 +87,39 @@ int count_chars(FILE *fptr)
  */
 int count_words(FILE *fptr)
 {
-  int current;
-  int wordcount = 0;
+    int current;
+    int wordcount = 0;
+    int whitespace = 0; // used to check for whitespace before the actual words
+    // sift through the string until we find a character that indicates a word ending
+    // end of a word = ' ', '\n'
+    
+    while (1) {
+        current = fgetc(fptr);
 
-  while ((current = fgetc(fptr)) != EOF)
-    if (current == ' ')
-      wordcount++;
+        // check if EOF
+        if (feof(fptr)) {
+            break;
+        }
 
-  return wordcount;
-  
-}
+        // figure out a way to check if the file begins with whitespace?
+        if (whitespace == 0) {
+            whitespace = !isspace(current);
+        }
+
+        // actual MEAT - the checking and counting
+        while (is_non_an(current) && !feof(fptr) && whitespace) { // do this while the current char is not alphanumeric, not eof, and not whitespace
+            current = fgetc(fptr); // get a new check
+
+            if (!is_non_an(current) || feof(fptr)) { // if it is alphanumeric or the last word in the file...
+                wordcount++;
+                current = 'j'; // exiting the loop to start a new check
+            }
+        }    
+    }
+
+    rewind(fptr);
+    return wordcount;  
+} 
 
 
 /*
@@ -65,7 +132,8 @@ int count_words(FILE *fptr)
  */
 int count_case_sensitive_occurrences(FILE *fptr, char const *str)
 {
-    // TODO
+    // comb through the file, and check if the current matches the first char in str
+    // if so, enter into a loop the size of the string 
 }
 
 
