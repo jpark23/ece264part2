@@ -9,7 +9,7 @@
 #include <string.h> // to use strlen()
 
 // Comment out the next line if you do not wish to do the extra credit
-//#define EXTRA_CREDIT
+#define EXTRA_CREDIT
 
 
 /*
@@ -153,8 +153,8 @@ int count_case_sensitive_occurrences(FILE *fptr, char const *str)
         }
 
         if (test == str[i]) { // if the first character of the string matches the test
-            test = fgetc(fptr); // move onto the next char in the file
-            for (i = 1; i <= length; i++) {
+            for (i = 1; i < length; i++) {
+                test = fgetc(fptr);
                 placeholder++; // use this to check if the string is completed
                 if (test != str[i]) { // if they dont match stop comparing
                     i = length + 1; // exit the loop
@@ -162,7 +162,6 @@ int count_case_sensitive_occurrences(FILE *fptr, char const *str)
             }
         }
         if (placeholder == length) {
-            printf("match! %d %d \n", placeholder, length);
             count++;
         }
     }
@@ -171,7 +170,7 @@ int count_case_sensitive_occurrences(FILE *fptr, char const *str)
     }
 
     return count;
-}
+}    
 
 
 /*
@@ -186,7 +185,46 @@ int count_case_sensitive_occurrences(FILE *fptr, char const *str)
  */
 int count_case_insensitive_occurrences(FILE *fptr, char const *str)
 {
-    // TODO
+    // comb through the file, and check if the current matches the first char in str
+    // if so, enter into a loop the size of the string to compare with the string
+
+    int test;
+    int testlower;
+    int i; // checking which # letter in the string we're at
+    int length = strlen(str);
+    int count = 0;
+    int placeholder;
+
+    while (1) {
+        testlower = fgetc(fptr); // grab the first instance
+        test = tolower(testlower);
+        i = 0; // resets the check
+        placeholder = 1;
+
+        // check for eof
+        if (feof(fptr)) {
+            break;
+        }
+
+        if (test == (tolower(str[i]))) { // if the first character of the string matches the test
+            for (i = 1; i < length; i++) {
+                testlower = fgetc(fptr);
+                test = tolower(testlower);
+                placeholder++; // use this to check if the string is completed
+                if (test != (tolower(str[i]))) { // if they dont match stop comparing
+                    i = length + 1; // exit the loop
+                }
+            }
+        }
+        if (placeholder == length) {
+            count++;
+        }
+    }
+    if (length == 1) {
+        printf("\n\nwarning: # of occurences is incorrect due to the string length of 1\n\n");
+    }
+
+    return count;
 }
 
 
@@ -222,7 +260,7 @@ int main(int argc, char **argv)
 #ifdef EXTRA_CREDIT
     char *str2 = "The";
     int ocount2 = count_case_insensitive_occurrences(ifile, str2);
-    printf("Input file '%s' contains %d case insensitive occurrences of the word '%s'.\n", argv[1], ocount, str);
+    printf("Input file '%s' contains %d case insensitive occurrences of the word '%s'.\n", argv[1], ocount2, str2);
 #endif
 
     fclose(ifile);
