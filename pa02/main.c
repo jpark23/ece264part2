@@ -161,10 +161,13 @@ int count_case_sensitive_occurrences(FILE *fptr, char const *str)
                 }
             }
         }
-        if (placeholder = length) {
+        if (placeholder == length) {
             printf("match! %d %d \n", placeholder, length);
             count++;
         }
+    }
+    if (length == 1) {
+        printf("\n\nwarning: # of occurences is incorrect due to the string length of 1\n\n");
     }
 
     return count;
@@ -211,7 +214,7 @@ int main(int argc, char **argv)
     printf("Input file '%s' contains %d words.\n", argv[1], wcount);
 
     // Count case sensitive occurrences of a string
-    char *str = "t";
+    char *str = "The";
     int ocount = count_case_sensitive_occurrences(ifile, str);
     printf("Input file '%s' contains %d case sensitive occurrences of the word '%s'.\n", argv[1], ocount, str);
 
