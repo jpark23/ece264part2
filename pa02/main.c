@@ -40,17 +40,8 @@ int count_chars(FILE *fptr)
                charcount++;   
             }
         }
-    } /*
-    while ( ((current = fgetc(fptr)) != EOF) && !isspace(current) ) {
-       if ( (current != ' ')  && 
-	        (current != '\n') && 
-	        (current != '\t') &&
-	        (current != '\v') &&
-	        (current != '\f') &&
-	        (current != '\r') ) {
-            charcount++;   
-            }
-    }*/
+    } 
+    
     rewind(fptr);
     return charcount; 
 
@@ -159,10 +150,11 @@ int count_case_sensitive_occurrences(FILE *fptr, char const *str)
                 if (test != str[i]) { // if they dont match stop comparing
                     i = length + 1; // exit the loop
                 }
+                else if (placeholder == length) {
+                    count++;
+                    break;
+                }
             }
-        }
-        if (placeholder == length) {
-            count++;
         }
     }
     if (length == 1) {
@@ -187,7 +179,7 @@ int count_case_insensitive_occurrences(FILE *fptr, char const *str)
 {
     // comb through the file, and check if the current matches the first char in str
     // if so, enter into a loop the size of the string to compare with the string
-
+    rewind(fptr);
     int test;
     int testlower;
     int i; // checking which # letter in the string we're at
@@ -205,7 +197,6 @@ int count_case_insensitive_occurrences(FILE *fptr, char const *str)
         if (feof(fptr)) {
             break;
         }
-
         if (test == (tolower(str[i]))) { // if the first character of the string matches the test
             for (i = 1; i < length; i++) {
                 testlower = fgetc(fptr);
@@ -214,10 +205,11 @@ int count_case_insensitive_occurrences(FILE *fptr, char const *str)
                 if (test != (tolower(str[i]))) { // if they dont match stop comparing
                     i = length + 1; // exit the loop
                 }
+                else if (placeholder == length) {
+                    count++;
+                    break;
+                }
             }
-        }
-        if (placeholder == length) {
-            count++;
         }
     }
     if (length == 1) {
