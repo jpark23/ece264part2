@@ -140,13 +140,12 @@ int count_case_sensitive_occurrences(FILE *fptr, char const *str)
     int i; // checking which # letter in the string we're at
     int length = strlen(str);
     int count = 0;
-    int debug;
     int placeholder;
 
     while (1) {
         test = fgetc(fptr); // grab the first instance
         i = 0; // resets the check
-        debug = 0;
+        placeholder = 1;
 
         // check for eof
         if (feof(fptr)) {
@@ -156,17 +155,16 @@ int count_case_sensitive_occurrences(FILE *fptr, char const *str)
         if (test == str[i]) { // if the first character of the string matches the test
             test = fgetc(fptr); // move onto the next char in the file
             for (i = 1; i <= length; i++) {
+                placeholder++; // use this to check if the string is completed
                 if (test != str[i]) { // if they dont match stop comparing
                     i = length + 1; // exit the loop
-                    placeholder = i;
                 }
             }
         }
-
-        if (i == placeholder + 1) {
+        if (placeholder = length) {
+            printf("match! %d %d \n", placeholder, length);
             count++;
         }
-        debug++;
     }
 
     return count;
@@ -213,7 +211,7 @@ int main(int argc, char **argv)
     printf("Input file '%s' contains %d words.\n", argv[1], wcount);
 
     // Count case sensitive occurrences of a string
-    char *str = "The";
+    char *str = "t";
     int ocount = count_case_sensitive_occurrences(ifile, str);
     printf("Input file '%s' contains %d case sensitive occurrences of the word '%s'.\n", argv[1], ocount, str);
 
