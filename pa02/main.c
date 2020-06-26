@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <string.h>
 #include <ctype.h> // to use isalnum() to check for alphanumeric characters
+#include <string.h> // to use strlen()
 
 // Comment out the next line if you do not wish to do the extra credit
 //#define EXTRA_CREDIT
@@ -133,7 +134,42 @@ int count_words(FILE *fptr)
 int count_case_sensitive_occurrences(FILE *fptr, char const *str)
 {
     // comb through the file, and check if the current matches the first char in str
-    // if so, enter into a loop the size of the string 
+    // if so, enter into a loop the size of the string to compare with the string
+
+    int test;
+    int i; // checking which # letter in the string we're at
+    int length = strlen(str);
+    int count = 0;
+    int debug;
+    int placeholder;
+
+    while (1) {
+        test = fgetc(fptr); // grab the first instance
+        i = 0; // resets the check
+        debug = 0;
+
+        // check for eof
+        if (feof(fptr)) {
+            break;
+        }
+
+        if (test == str[i]) { // if the first character of the string matches the test
+            test = fgetc(fptr); // move onto the next char in the file
+            for (i = 1; i <= length; i++) {
+                if (test != str[i]) { // if they dont match stop comparing
+                    i = length + 1; // exit the loop
+                    placeholder = i;
+                }
+            }
+        }
+
+        if (i == placeholder + 1) {
+            count++;
+        }
+        debug++;
+    }
+
+    return count;
 }
 
 
