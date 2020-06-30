@@ -1,0 +1,7 @@
+/home/user1/work/src/main.c
+/home/user1/work/src/parser.c
+/home/user1/work/src/parser.py
+/home/user1/work/hdr/parser.h
+/home/user1/work/hdr/util.h
+/home/user1/work/build/exe
+/home/user1/work/input/sample.txt
