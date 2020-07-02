@@ -179,7 +179,7 @@ int main(int argc, char **argv)
      * the file names and process them in a loop.
      */ 
     FILE *fptr = fopen(argv[1], "r");
-    char readfile[100];
+    char readfile[1000];
 
     while (1) {
         fgets(readfile, 100, fptr);
