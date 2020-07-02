@@ -6,7 +6,7 @@ exe: $(OBJ)
 	./exe
 
 %.o: %.c 
-	gcc -c -g -Wall -Werror $<
+	gcc -c -g -Wall -Werror -std=c11 $<
 
 clean:
 	rm exe *.o
