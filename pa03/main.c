@@ -104,6 +104,7 @@ int rename_file_name(char *renamed_filename, const char *filename, unsigned int 
     // dont forget to check for buffer size
 
     char newptr[100];
+    char newptr2[100];
      	
 	if (buffer_size <= 100) {
 		return CONVERSION_FAIL;
@@ -121,7 +122,7 @@ int rename_file_name(char *renamed_filename, const char *filename, unsigned int 
 	}
 
 	// copy the string into the renamed_file
-	strcpy(renamed_filename, filename);
+	strcpy(newptr2, filename);
     
     char end[100];
     int i = 0;
@@ -150,9 +151,11 @@ int rename_file_name(char *renamed_filename, const char *filename, unsigned int 
     }
 	
 	// add everything to the renamed_filename
-    strcat(renamed_filename, newptr);
-    FILE *write = fopen(argv[2], "a");
-    fputs(renamed_filename, write);
+    strcat(newptr2, newptr);
+    FILE *write = fopen(renamed_filename, "a");
+    fputs(newptr2, write);
+
+    fclose(write);
 
     return 0;
 }
