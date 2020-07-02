@@ -151,8 +151,9 @@ int rename_file_name(char *renamed_filename, const char *filename, unsigned int 
 	
 	// add everything to the renamed_filename
     strcat(renamed_filename, newptr);
-	
-//TODO    free(end);
+    FILE *write = fopen(argv[2], "a");
+    fputs(renamed_filename, write);
+
     return 0;
 }
 
