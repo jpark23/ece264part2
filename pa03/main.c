@@ -37,55 +37,47 @@ int check_file_name(const char *filename)
      */ 
     int result = VALID; // valid until proven invalid
 
-    char test[100];
-    FILE* fptr = fopen(filename, "r");
+    char *period = strstr(filename, ".\0");
+    char *slash = strstr(filename, "\\0");
 
-    while (1) {
-        fgets(test, 100, fptr);
+    int alphanum;
+    int valid;
 
-        char *period = strstr(test, ".\0");
-        char *slash = strstr(test, "\\0");
+    // begins with a slash
+    if (filename[0] != '/') {
+        result = INVALID;
+    }
 
-        int alphanum;
-        int valid;
+    // ends with something that's not a slash or a period
+    else if (period != NULL && slash != NULL) {
+        result = INVALID;
+    }
 
-        // begins with a slash
-        if (test[0] != '/') {
+    // only alphanum, period, hyphen, foward slash, or underscores
+    for (int index = 0; index <= strlen(filename); index++) {
+        alphanum = isalnum(filename[index]);
+        valid = (alphanum || 
+                filename[index] == '.' || 
+                filename[index] == '-' ||
+                filename[index] == '/' ||
+                filename[index] == '_');
+        if (!valid) {
             result = INVALID;
         }
+    }
 
-        // ends with something that's not a slash or a period
-        else if (period != NULL && slash != NULL) {
-            result = INVALID;
-        }
-
-        // only alphanum, period, hyphen, foward slash, or underscores
-        for (int index = 0; index <= strlen(test); index++) {
-            alphanum = isalnum(test[index]);
-            valid = (alphanum || 
-                    test[index] == '.' || 
-                    test[index] == '-' ||
-                    test[index] == '/' ||
-                    test[index] == '_');
-            if (!valid) {
-                result = INVALID;
-            }
-        }
-
-        // directory/filename doesnt begin with a numeric or hyphen
-        // search for the next /
-        // check the first one after and make sure its not a numeric or a hyphen
-        for (int index2 = 0; index2 <= strlen(test); index2++) {
-            if (test[index2] == '/') {
-                if ( test[index2 + 1] == '-' ||
-                     isdigit(test[index2 + 1]) ) {
-                        result = INVALID;
-                    }
+    // directory/filename doesnt begin with a numeric or hyphen
+    // search for the next /
+    // check the first one after and make sure its not a numeric or a hyphen
+    for (int index2 = 0; index2 <= strlen(filename); index2++) {
+        if (filename[index2] == '/') {
+            if ( filename[index2 + 1] == '-' ||
+                 isdigit(filename[index2 + 1]) ) {
+                    result = INVALID;
             }
         }
     }
 
-    fclose(fptr);
     return result;
 }
 
@@ -181,8 +173,8 @@ int main(int argc, char **argv)
     FILE *fptr = fopen(argv[1], "r");
     char readfile[1000];
 
-    while (1) {
-        fgets(readfile, 100, fptr);
+
+    while (fgets(readfile, 100, fptr) != NULL) {
         if (check_file_name(readfile)) {
             rename_file_name(argv[2], readfile, 100);
         }
