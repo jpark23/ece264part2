@@ -131,9 +131,6 @@ int rename_file_name(char *renamed_filename, const char *filename, unsigned int 
 	// copy the string into the renamed_file
 	strcpy(renamed_filename, filename);
     
-//TODO    char* end = strdup(filename + breakpoint);
-
-    // Stupid strdup workaround
     char end[100];
     int i = 0;
     int j = breakpoint;
@@ -180,8 +177,18 @@ int main(int argc, char **argv)
     /*
      * In this part of main(), you could open the input file, read
      * the file names and process them in a loop.
-     */
+     */ 
+    FILE *fptr = fopen(argv[1], "r");
+    char readfile[100];
 
+    while (1) {
+        fgets(readfile, 100, fptr);
+        if (check_file_name(readfile)) {
+            rename_file_name(argv[2], readfile, 100);
+        }
+    }
+
+    fclose(fptr);
     return EXIT_SUCCESS;
 }
 
