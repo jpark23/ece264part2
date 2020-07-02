@@ -131,7 +131,15 @@ int rename_file_name(char *renamed_filename, const char *filename, unsigned int 
 	// copy the string into the renamed_file
 	strcpy(renamed_filename, filename);
     
-    char* end = strdup(filename + breakpoint);
+//TODO    char* end = strdup(filename + breakpoint);
+
+    // Stupid strdup workaround
+    char end[100];
+    int i = 0;
+    int j = breakpoint;
+    while (filename[j] > 31 && filename[j] != '\0') {
+      end[i++] = filename[j++];
+    }
 
 	// cat the correct extension to the filename
 	// .c
@@ -155,7 +163,7 @@ int rename_file_name(char *renamed_filename, const char *filename, unsigned int 
 	// add everything to the renamed_filename
     strcat(renamed_filename, newptr);
 	
-    free(end);
+//TODO    free(end);
     return 0;
 }
 
