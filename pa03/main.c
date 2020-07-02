@@ -54,7 +54,8 @@ int check_file_name(const char *filename)
     }
 
     // only alphanum, period, hyphen, foward slash, or underscores
-    for (int index = 0; index <= strlen(filename); index++) {
+    int index = 0;
+    while (filename[index] > 31 && filename[index] != '\0') {
         alphanum = isalnum(filename[index]);
         valid = (alphanum || 
                 filename[index] == '.' || 
@@ -64,18 +65,21 @@ int check_file_name(const char *filename)
         if (!valid) {
             result = INVALID;
         }
+	index++;
     }
 
     // directory/filename doesnt begin with a numeric or hyphen
     // search for the next /
     // check the first one after and make sure its not a numeric or a hyphen
-    for (int index2 = 0; index2 <= strlen(filename); index2++) {
+    int index2 = 0;
+    while (filename[index2] > 31 && filename[index2] != '\0') {
         if (filename[index2] == '/') {
             if ( filename[index2 + 1] == '-' ||
                  isdigit(filename[index2 + 1]) ) {
                     result = INVALID;
             }
         }
+      index2++;
     }
 
     return result;
@@ -106,7 +110,7 @@ int rename_file_name(char *renamed_filename, const char *filename, unsigned int 
     char newptr[100];
     char newptr2[100];
      	
-	if (buffer_size <= 100) {
+	if (buffer_size < 100) {
 		return CONVERSION_FAIL;
 	}
 
