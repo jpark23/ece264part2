@@ -121,7 +121,7 @@ int rename_file_name(char *renamed_filename, const char *filename, unsigned int 
 	for (int index = 0; index <= 100; index++) {
 		if (filename[index] == '/') {
 			slashcount++;
-			breakpoint = index;	
+			breakpoint = index + 1;	
 		}
 	}
 
@@ -129,33 +129,30 @@ int rename_file_name(char *renamed_filename, const char *filename, unsigned int 
 	strcpy(newptr2, filename);
     
     char end[100];
-    int i = 0;
-    int j = breakpoint;
-    while (filename[j] > 31 && filename[j] != '\0') {
-      end[i++] = filename[j++];
-    }
+    strcpy(end, filename+breakpoint);
 
 	// cat the correct extension to the filename
 	// .c
     if (strstr(end, ".c") != NULL) {
-        strcpy(newptr, "/c");
+        strcpy(newptr, "c/");
         strcat(newptr, end);
     }
 
 	//.py
     else if (strstr(end, ".py") != NULL) {
-        strcpy(newptr, "/py");
+        strcpy(newptr, "py/");
         strcat(newptr, end);
     }
 	
 	// anything else, add misc
     else {
-        strcpy(newptr, "/misc");
+        strcpy(newptr, "misc/");
         strcat(newptr, end);
     }
 	
 	// add everything to the renamed_filename
-    strcat(newptr2, newptr);
+    strcpy(newptr2+breakpoint, newptr);
+    //strcat(newptr2, newptr); 
     FILE *write = fopen(renamed_filename, "a");
     fputs(newptr2, write);
 
