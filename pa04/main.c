@@ -81,14 +81,14 @@ int **get_adj_mat(FILE *fptr, int *n)
             }
         }
     }
-    *n = biggest;
+    *n = biggest+1;
 
     // allocate the matrix
     int** adj = malloc(*n * sizeof(int *)); 
     for (int i = 0; i < *n; i++) {
         adj[i] = malloc(*n * sizeof(int));
     }
-    
+
     // initialize all entries to 0
     int row;
     int col;
@@ -134,14 +134,18 @@ int **get_adj_mat(FILE *fptr, int *n)
 
             adj[src2][dst2] = 1;
         }
+    }
 
-    // free everything?
-    /*
-    for (int j = 0; j < *n; j++) {
-        free(adj[j]);
+    // print the matrix
+    printf("\nAdjacency Matrix:\n");
+    int row2, col2;
+    for (row2 = 0; row2 < *n; row2++) {
+        for (col2 = 0; col2 < *n; col2++) {
+            printf("%d ", adj[row2][col2]);
+        }
+        printf("\n");
     }
-    free(adj);*/
-    }
+    printf("\n");
     return adj;
 }
 
