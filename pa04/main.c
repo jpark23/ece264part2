@@ -11,8 +11,17 @@
 #define PRESENT 1
 #define ABSENT  0
 
-// define the new function
-int read_char(FILE *fptr);
+int read_char(FILE *fptr) {
+    // read character from file
+    int ch = fgetc(fptr);
+
+    // unexpected error?
+    if (ferror(fptr)) {
+        fprintf(stderr, "[ERROR]\n");
+        exit(1);
+    }
+    return ch;
+}
 
 /*
  *  Synopsis        [Build the adjacency matrix representation of a graph
@@ -132,6 +141,7 @@ int **get_adj_mat(FILE *fptr, int *n)
         free(adj[j]);
     }
     free(adj);*/
+    }
     return adj;
 }
 
@@ -147,21 +157,6 @@ int find_path(int **adj_mat, int n, int src, int dst)
     // TODO if you want extra credit
     return 0;
 }
-
-int read_char(FILE *fptr) {
-    // read character from file
-    int ch = fgetc(fptr);
-
-    // unexpected error?
-    if (ferror(fptr)) {
-        fprintf(stderr, "[ERROR]\n");
-        exit(1);
-    }
-
-    return ch;
-
-}
-
 
 int main(int argc, char *argv[])
 {
@@ -194,7 +189,7 @@ int main(int argc, char *argv[])
     fclose(infile);
     
     // free the matrix
-    for (int j = 0; j < *n; j++) {
+    for (int j = 0; j < size; j++) {
         free(adj_mat[j]);
     }
     free(adj_mat);
