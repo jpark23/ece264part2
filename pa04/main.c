@@ -73,9 +73,9 @@ int **get_adj_mat(FILE *fptr, int *n)
         }
     }
     *n = biggest;
-    printf("biggest = %d\n", biggest);
+
     // allocate the matrix
-    int *adj[*n]; // = malloc(*n * sizeof(int)); 
+    int** adj = malloc(*n * sizeof(int *)); 
     for (int i = 0; i < *n; i++) {
         adj[i] = malloc(*n * sizeof(int));
     }
@@ -126,12 +126,13 @@ int **get_adj_mat(FILE *fptr, int *n)
             adj[src2][dst2] = 1;
         }
 
-    // free everything
+    // free everything?
+    /*
     for (int j = 0; j < *n; j++) {
         free(adj[j]);
     }
-    //free(adj);
-    return adj[0];
+    free(adj);*/
+    return adj;
 }
 
 
@@ -191,6 +192,12 @@ int main(int argc, char *argv[])
     }
 
     fclose(infile);
+    
+    // free the matrix
+    for (int j = 0; j < *n; j++) {
+        free(adj_mat[j]);
+    }
+    free(adj_mat);
 
     return EXIT_SUCCESS;
 }
