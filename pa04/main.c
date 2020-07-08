@@ -31,8 +31,8 @@ int **get_adj_mat(FILE *fptr, int *n)
     // how many nodes? if the size is n, adj needs to be n by n
 
     // reading loop one, how many nodes in the graph?
-    int counter = 0;
     int ch;
+    int biggest = 0;
     while (1) {
         ch = read_char(fptr); // read first character on the line
         //printf("ch = %d\n", ch);
@@ -47,17 +47,35 @@ int **get_adj_mat(FILE *fptr, int *n)
             }
         }
 
-        else if (isdigit(ch)) {
-            counter++; // update the counter
-            while (ch != '\n' && !feof(fptr)) {
-                ch = read_char(fptr); // skip the rest of the line
+        else {
+            // go to the beginning of the line
+            ungetc(ch, fptr);
+
+            // grab the numbers from the file
+            int src;
+            int dst;
+            char ssrc[128];
+            char sdst[128];
+            fscanf(fptr, "%s %s", ssrc, sdst);
+
+            char *endptr = NULL;
+            src = strtol(ssrc, &endptr, 10);
+            endptr = NULL;
+            dst = strtol(sdst, &endptr, 10);
+
+            // figure out which one is biggest
+            if (src > biggest) {
+                biggest = src;
+            } 
+            else if (dst > biggest) {
+                biggest = dst;
             }
         }
     }
-    *n = counter;
-
+    *n = biggest;
+    printf("biggest = %d\n", biggest);
     // allocate the matrix
-    int **adj = malloc(*n * sizeof(int)); 
+    int *adj[*n]; // = malloc(*n * sizeof(int)); 
     for (int i = 0; i < *n; i++) {
         adj[i] = malloc(*n * sizeof(int));
     }
@@ -71,29 +89,49 @@ int **get_adj_mat(FILE *fptr, int *n)
         }
     }
 
+    rewind(fptr);
     // once read an edge, replace entry from 0 to 1
-    /*
-    int ch;
+    int ch2;
     while (1) {
-        ch = read_char(fptr); // read first character on the line
+        ch2 = read_char(fptr); // read first character on the line
         //printf("ch = %d\n", ch);
 
         if(feof(fptr)) {
             break; // exits the loop if EOF
         }
 
-        if (ch == '#') { // can't use this line, need to bypass
-            while (ch != '\n' && !feof(fptr)) {
-                ch = read_char(fptr);
+        if (ch2 == '#') { // can't use this line, need to bypass
+            while (ch2 != '\n' && !feof(fptr)) {
+                ch2 = read_char(fptr);
             }
         }
-    */
+
+        else {
+            ungetc(ch2, fptr); // back to beginning of the line
+            int src2;
+            int dst2;
+
+            // character buffers
+            char ssrc2[128];
+            char sdst2[128];
+            fscanf(fptr, "%s %s", ssrc2, sdst2);
+
+            // convert the strings to ints
+            char *endptr;
+            endptr = NULL;
+            src2 = strtol(ssrc2, &endptr, 10);
+            endptr = NULL;
+            dst2 = strtol(sdst2, &endptr, 10);
+
+            adj[src2][dst2] = 1;
+        }
+
     // free everything
     for (int j = 0; j < *n; j++) {
         free(adj[j]);
     }
-    free(adj);
-    return 0;
+    //free(adj);
+    return adj[0];
 }
 
 
