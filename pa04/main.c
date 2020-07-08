@@ -57,7 +57,7 @@ int **get_adj_mat(FILE *fptr, int *n)
     *n = counter;
 
     // allocate the matrix
-    int **adj = malloc(*n * sizeof(int)); 
+    int *adj[*n];// = malloc(*n * sizeof(int));  // TODO - segfault this method
     for (int i = 0; i < *n; i++) {
         adj[i] = malloc(*n * sizeof(int));
     }
@@ -72,6 +72,7 @@ int **get_adj_mat(FILE *fptr, int *n)
     }
 
     // once read an edge, replace entry from 0 to 1
+    /*
     int ch;
     while (1) {
         ch = read_char(fptr); // read first character on the line
@@ -86,12 +87,12 @@ int **get_adj_mat(FILE *fptr, int *n)
                 ch = read_char(fptr);
             }
         }
-
+    */
     // free everything
     for (int j = 0; j < *n; j++) {
         free(adj[j]);
     }
-    free(adj);
+//    free(adj);  // TODO - only need this if using **adj = malloc
     return 0;
 }
 
