@@ -72,6 +72,7 @@ int **get_adj_mat(FILE *fptr, int *n)
     }
 
     // once read an edge, replace entry from 0 to 1
+    /*
     int ch;
     while (1) {
         ch = read_char(fptr); // read first character on the line
@@ -86,7 +87,7 @@ int **get_adj_mat(FILE *fptr, int *n)
                 ch = read_char(fptr);
             }
         }
-
+    */
     // free everything
     for (int j = 0; j < *n; j++) {
         free(adj[j]);
