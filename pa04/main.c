@@ -81,7 +81,7 @@ int **get_adj_mat(FILE *fptr, int *n)
             }
         }
     }
-    *n = biggest+1;
+    *n = biggest;
 
     // allocate the matrix
     int** adj = malloc(*n * sizeof(int *)); 
@@ -132,7 +132,7 @@ int **get_adj_mat(FILE *fptr, int *n)
             endptr = NULL;
             dst2 = strtol(sdst2, &endptr, 10);
 
-            adj[src2][dst2] = 1;
+            adj[src2-1][dst2-1] = 1;
         }
     }
 
