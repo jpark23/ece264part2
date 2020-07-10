@@ -149,6 +149,40 @@ int **get_adj_mat(FILE *fptr, int *n)
     return adj;
 }
 
+int create_int_buffer(int size) {
+	int *buffer = malloc(size * sizeof(int));
+    if (buffer == NULL) {
+		exit(EXIT_FAILURE);
+		}
+		
+		return buffer; // returns pointer to buffer space we just allocated
+}
+
+void insert_buffer(int *buffer, int *start, int *end, int data, int buffer_size) {
+	if ((*end + 1) % buffer_size != *start) {
+		data = buffer[*end]; // next available set in the buffer can have data stored in it
+		// don't forget to do the wrap thing
+		*end = (*end + 1) % buffer_size; // this is the wrap, the % buffer size
+		printf ("inserted: %d\n", data);
+	}
+	else 
+		Print ("buffer full");
+	}
+	
+int remove_buffer(int *buffer, int *start, int *end, int data, int buffer_size) {
+	int data;
+	if (*end != *start) {
+	    data = buffer[*start];
+		*start = (*start + 1) % buffer_size;
+		printf("removed %d\n", data);
+	}
+	else {
+		printf("buffer_empty\n");
+		data = -1;
+    }
+
+    return data;
+}
 
 /*
  *  Synopsis        [Determine if a path exists from the src to the dst vertex
@@ -158,8 +192,33 @@ int **get_adj_mat(FILE *fptr, int *n)
  */
 int find_path(int **adj_mat, int n, int src, int dst)
 {
-    // TODO if you want extra credit
-    return 0;
+    int buffer_size = n;
+    int explored_buffer = create_int_buffer(n);
+    int discovered_buffer = create_int_buffer(n);
+    
+    // initalize buffer indicators
+    int ex_start, ex_end = 0;
+    int disc_start, disc_end = 0;
+
+    // How to use the buffer
+    // insert_buffer(buffer, &start, &end, data, n); 
+    // remove_buffer(buffer, &start, &end);
+    // start is the first index out, I think
+
+    // first index in explored buffer is src
+    insert_buffer(explored_buffer, &ex_start, &ex_end, src, n);
+
+    // as we find indices, we add them to the explored buffer
+    // remember, adj matrix coords = (row, column)
+    for (int col = 0; col < n; col++) {
+        if (adj_mat[src][col] == 1) {
+            insert_buffer(explored_buffer, &ex_start, &ex_end, col, n);
+        }
+    }
+
+    insert_buffer(discovered_buffer, &disc_start, &disc_end, src, n);
+
+    return 0; // don't forget to free the buffers
 }
 
 int main(int argc, char *argv[])
