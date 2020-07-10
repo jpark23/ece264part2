@@ -169,7 +169,7 @@ void insert_buffer(int *buffer, int *start, int *end, int data, int buffer_size)
 		Print ("buffer full");
 	}
 	
-int remove_buffer(int *buffer, int *start, int *end, int data, int buffer_size) {
+int remove_buffer(int *buffer, int *start, int *end, int buffer_size) {
 	int data;
 	if (*end != *start) {
 	    data = buffer[*start];
@@ -184,6 +184,16 @@ int remove_buffer(int *buffer, int *start, int *end, int data, int buffer_size) 
     return data;
 }
 
+// function to check if a number is in an array
+int isitinthebuffer(int array, int buffer_size, int test)
+{
+    for (int i = 0; i <= buffer_size; i++) {
+        if (array[i] == test) {
+            return 1;
+        }
+    }
+}
+
 /*
  *  Synopsis        [Determine if a path exists from the src to the dst vertex
  *                  within the graph.]
@@ -195,6 +205,7 @@ int find_path(int **adj_mat, int n, int src, int dst)
     int buffer_size = n;
     int explored_buffer = create_int_buffer(n);
     int discovered_buffer = create_int_buffer(n);
+    int temp;
     
     // initalize buffer indicators
     int ex_start, ex_end = 0;
@@ -210,15 +221,32 @@ int find_path(int **adj_mat, int n, int src, int dst)
 
     // as we find indices, we add them to the explored buffer
     // remember, adj matrix coords = (row, column)
-    for (int col = 0; col < n; col++) {
+    int col;
+    for (col = 0; col < n; col++) {
         if (adj_mat[src][col] == 1) {
             insert_buffer(explored_buffer, &ex_start, &ex_end, col, n);
         }
     }
 
-    insert_buffer(discovered_buffer, &disc_start, &disc_end, src, n);
+    // the src becomes the first entry in the discovered buffer
+    temp = remove_buffer(explored_buffer, &ex_start, &ex_end, n); // remove it from the explored
+    insert_buffer(discovered_buffer, &disc_start, &disc_end, temp, n); // add it to discovered
 
-    return 0; // don't forget to free the buffers
+    // big loop to loop the rest of the BFS - TODO
+    for (int i = ex_start; i <= n; i++) { // double check this loop - TODO
+        for (col = 0; col <= n; col++) {
+            if (adj_mat[i][col] == 1) {
+                // if col # is not already in buffer, then add it to the buffer
+                // isitinthebuffer returns 1 if it's in the buffer
+                if (!isitinthebuffer()) { // figure this out - TODO
+                    insert_buffer(discovered_buffer, &disc_start, &disc_end, temp, n);
+                }
+            }
+        }
+    }
+
+
+    return 0; // don't forget to free the buffers - TODO
 }
 
 int main(int argc, char *argv[])
