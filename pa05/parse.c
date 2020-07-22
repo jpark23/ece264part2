@@ -50,10 +50,9 @@ school_t *parse(char *filename)
     int i = 0;
 
     while (!feof(fptr)) {
-        for (int l = 0; l <= numlines; l++) { // l = line
-            fgets(str, 12, fptr);
-            scanf("%d,%d,%d,%d", math_arr[i], lit_arr[i], chem_arr[i], phil_arr[i]);
-            i++;
+        fgets(str, 12, fptr);
+        scanf("%d,%d,%d,%d", math_arr[i], lit_arr[i], chem_arr[i], phil_arr[i]);
+        i++;
         }
     }
 
@@ -65,10 +64,10 @@ school_t *parse(char *filename)
     free(lit_arr);
     free(chem_arr);
     free(phil_arr);
-    free(*name);
+    free(name);
 
     // return pointer to school struct
-    return *name;
+    return name;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 //                                      END OF FILE                                     //
