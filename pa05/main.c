@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
     }
 
     // TODO
+    parse(argv[1]);
+    //parse(argv[1]);
 
     return EXIT_SUCCESS;
 }
