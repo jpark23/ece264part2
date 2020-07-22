@@ -43,22 +43,32 @@ school_t *parse(char *filename)
     }
 
     // allocate 4 subject arrays
-    int math_arr, lit_arr, chem_arr, phil_arr = calloc(numlines, sizeof(int));
+    int* math_arr, lit_arr, chem_arr, phil_arr = malloc(numlines * sizeof(int));
 
     rewind(fptr);
-    char str;
+    char* str;
     int i = 0;
 
     while (!feof(fptr)) {
         for (int l = 0; l <= numlines; l++) { // l = line
-            str = fgets(fptr);
-            scanf("%d,%d,%d,%d", math_arr[i++], lit_arr[i++], chem_arr[i++], phil_arr[i++]);
+            fgets(str, 12, fptr);
+            scanf("%d,%d,%d,%d", math_arr[i], lit_arr[i], chem_arr[i], phil_arr[i]);
+            i++;
         }
     }
 
     // close the file
+    fclose(fptr);
+
     // free the memory
+    free(math_arr);
+    free(lit_arr);
+    free(chem_arr);
+    free(phil_arr);
+    free(*name);
+
     // return pointer to school struct
+    return *name;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 //                                      END OF FILE                                     //
