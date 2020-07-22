@@ -49,7 +49,7 @@ school_t *parse(char *filename)
     int phil_arr[numlines];
 
     rewind(fptr);
-    char* str = 0;
+    char* str = malloc(12 * sizeof(char));
     int i = 0;
 
     while (!feof(fptr)) {
@@ -63,6 +63,7 @@ school_t *parse(char *filename)
 
     // free the memory?
     //free(name);
+    free(str);
 
     // return pointer to school struct
     return name;
