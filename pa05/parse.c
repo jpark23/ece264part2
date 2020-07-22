@@ -49,12 +49,12 @@ school_t *parse(char *filename)
     int phil_arr[numlines];
 
     rewind(fptr);
-    char* str = malloc(12 * sizeof(char));
+    char* str = malloc(16 * sizeof(char));
     int i = 0;
 
     while (!feof(fptr)) {
         fgets(str, 12, fptr);
-        scanf("%d,%d,%d,%d", &math_arr[i], &lit_arr[i], &chem_arr[i], &phil_arr[i]);
+        sscanf("%d,%d,%d,%d", &math_arr[i], &lit_arr[i], &chem_arr[i], &phil_arr[i]);
         i++;
     }
 
