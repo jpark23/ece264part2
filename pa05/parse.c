@@ -24,7 +24,7 @@ double mave , lave , cave , pave ; // Average grades by subject
 
 school_t *parse(char *filename)
 {
-    int subj_flag = 0; // keep track of which subject we're on
+    //int subj_flag = 0; // keep track of which subject we're on
 
     // allocate a school struct
     school_t *name = malloc(sizeof(school_t));
@@ -43,11 +43,16 @@ school_t *parse(char *filename)
     }
 
     // allocate 4 subject arrays
-    int math_arr, lit_arr, chem_arr, phil_arr = malloc(numlines * sizeof(int));
+    int math_arr, lit_arr, chem_arr, phil_arr = calloc(numlines, sizeof(int));
+
+    rewind(fptr);
+    char str;
+    int i = 0;
 
     while (!feof(fptr)) {
-        for (int i = 0; i <= 4) {
-            
+        for (int l = 0; l <= numlines; l++) { // l = line
+            str = fgets(fptr);
+            scanf("%d,%d,%d,%d", math_arr[i++], lit_arr[i++], chem_arr[i++], phil_arr[i++]);
         }
     }
 
