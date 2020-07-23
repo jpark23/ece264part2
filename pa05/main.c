@@ -17,9 +17,13 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    // TODO
-    parse(argv[1]);
-    //parse(argv[1]);
+    school_t *sch;
+
+    for (int i = 1; i < argc; i++) {
+        sch = parse(argv[i]);
+        school_compute_averages(sch);
+        school_print(sch);
+    }
 
     return EXIT_SUCCESS;
 }
