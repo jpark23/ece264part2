@@ -50,6 +50,7 @@ school_t *parse(char *filename)
     int read = 0; // read flag to see if after /
     int j = 0;
     int exit = 0;
+    memset(name->name, '\0', NAME_SIZE);
     for (int i = 0; exit == 0; i++) {
         if (!read && filename[i] == '/') 
             read = 1;
