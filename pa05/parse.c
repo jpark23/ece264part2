@@ -32,7 +32,8 @@ school_t *parse(char *filename)
     // read the input file's data into it
     FILE *fptr = fopen(filename, "r");
 
-    // parse the name of the school
+    /* parse the name of the school */
+    /*
     //char* schoolname = malloc(sizeof(filename));
     char care = fgetc(fptr); // gotta initalize it
     int index = 0;
@@ -44,8 +45,22 @@ school_t *parse(char *filename)
             }
         }
     }
-
     rewind(fptr);
+    */
+    int read = 0; // read flag to see if after /
+    int j = 0;
+    int exit = 0;
+    for (int i = 0; exit == 0; i++) {
+        if (!read && filename[i] == '/') 
+            read = 1;
+        
+        else if (filename[i] == '.') 
+            exit = 1;
+        
+        if (filename[i] != '/' && read == 1 && exit == 0)
+            name->name[j++] = filename[i];
+    }
+
     // how many lines are in the file?
     char ch;
     int numlines = 0;

@@ -60,9 +60,12 @@ void school_print(school_t *sch)
     Chemistry average: NA
     Philosophy average: NA
     */
-    printf("\n%s\n", sch->name);
+    printf("\nSchool: ");
+    for (int j = 0; j <= sizeof(sch->name); j++) {
+        printf("%c", sch->name[j]);
+    }
 
-    printf("Math scores: ");
+    printf("\nMath scores: ");
     int len = sizeof(sch->math) / sizeof(sch->math[0]);
     for (int i = 0; i < len; i++) {
         printf("%d ", sch->math[i]);
@@ -94,6 +97,12 @@ void school_print(school_t *sch)
    
     if (sch->pave != -1) printf("Philosophy average: %.2f\n", sch->pave);
     else printf("Philosophy average: NA\n");
+
+    if (sch->mave != -1 && sch->lave != -1 &&
+        sch->cave != -1 && sch->pave != -1) {
+            printf("School average: %.2f\n", (sch->mave + sch->lave + sch->cave + sch->lave));
+        }
+    else printf("School average: NA\n");
     
     printf("---------------------------------------\n");
 
