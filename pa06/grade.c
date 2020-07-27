@@ -25,10 +25,11 @@ grade_t *grade_alloc(int num_elements)
 
 void grade_free(grade_t *something)
 {
-    /* frees the memory associated with a grade structure from heap memory
-    No return. No print. */
+    	/* frees the memory associated with a grade structure from heap memory
+    	No return. No print. */
 
-    free(something);
+    	free(something);
+	something = NULL;
 }
 
 grade_t *grade_insert(grade_t *head, grade_t *new)
@@ -66,22 +67,25 @@ grade_t *grade_search(grade_t *head, int searchfor)
     struct grade *prev;     // Pointer to previous grade in grade list
     struct grade *next;     // Pointer to next grade in grade list */
 
-    grade_t *ptr = head;
+	grade_t *ptr = head;
 
-    while (ptr != NULL) {
-        if (ptr->grade == searchfor) {
-            return ptr;
-        }
+    	while (ptr->next != head) { // change this to avoid infinite loop
+        	if (ptr->grade == searchfor) {
+            		return ptr;
+        	}
+        	if (ptr->next != NULL) {
+            		ptr = ptr->next;
+        		} else return NULL;
+    	}
+	
+	ptr = ptr->next; // advance to the final link
+	if (ptr->grade == searchfor) {
+		return ptr;
+	} else return NULL
 
-        if (ptr->next != NULL) {
-            ptr = ptr->next;
-        } else {
-            return NULL;
-        }
-    }
 }
 
-grade_t *grade_remove_first(grade_t *head)
+grade_t *grade_remove_first(grade_t *head) // TODO
 {
     /*
     * This function should remove the first grade structure, the one pointed to by the
@@ -121,7 +125,7 @@ grade_t *grade_remove(grade_t *something, int something2) // EXTRA CREDIT
     return 0;
 }
 
-void *grades_print_ascending(grade_t *something)
+void *grades_print_ascending(grade_t *something) // TODO
 {
     /*
     * The function should print to stdout the grades in the grade list that are strictly less
@@ -134,7 +138,7 @@ void *grades_print_ascending(grade_t *something)
     */
 }
 
-void *grades_print_descending(grade_t *something)
+void *grades_print_descending(grade_t *something) // TODO
 {
     /*
     * The function should print to stdout the grades in the grade list in descending order.
