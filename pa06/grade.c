@@ -10,27 +10,27 @@
 
 grade_t *grade_alloc(int grad)
 {
-    	/* allocates and initalizes a grade structure on the heap
-    	returns a pointer to the allocated structure */
+    /* allocates and initalizes a grade structure on the heap
+    returns a pointer to the allocated structure */
 
-    	grade_t *gradelist = malloc(sizeof(grade_t));
+    grade_t *gradelist = malloc(sizeof(grade_t));
 
 	gradelist->grade = grad;
 
-    	gradelist->prev = NULL;
-    	gradelist->next = NULL;
+    gradelist->prev = NULL;
+    gradelist->next = NULL;
 
-    	// error check?
+    // error check?
 
-    	return gradelist;
+    return gradelist;
 }
 
 void grade_free(grade_t *something)
 {
-    	/* frees the memory associated with a grade structure from heap memory
-    	No return. No print. */
+    /* frees the memory associated with a grade structure from heap memory
+    No return. No print. */
 
-    	free(something);
+    free(something);
 	something = NULL;
 }
 
@@ -71,23 +71,22 @@ grade_t *grade_search(grade_t *head, int searchfor)
 
 	grade_t *ptr = head;
 
-    	while (ptr->next != head) { // change this to avoid infinite loop
-        	if (ptr->grade == searchfor) {
-            		return ptr;
-        	}
-        	if (ptr->next != NULL) {
-            		ptr = ptr->next;
-        		} else return NULL;
-    	}
+    while (ptr->next != head) { 
+        if (ptr->grade == searchfor) {
+            	return ptr;
+        }
+        if (ptr->next != NULL) {
+            	ptr = ptr->next;
+        	} else return NULL;
+    }
 	
 	ptr = ptr->next; // advance to the final link
 	if (ptr->grade == searchfor) {
 		return ptr;
-	} else return NULL
-
+	} else return NULL;
 }
 
-grade_t *grade_remove_first(grade_t *head) // TODO
+grade_t *grade_remove_first(grade_t *head) 
 {
     /*
     * This function should remove the first grade structure, the one pointed to by the
@@ -117,17 +116,17 @@ grade_t *grade_remove_last(grade_t *head)
 
     // if it was next to remove the first one, than prev should be the last one
 
-    grade_t *headstore = head;
+    grade_t *temp = head->prev;
 
-    head->prev->next = head->prev->prev->next;
-    head->prev->prev = head->prev;
+    head->prev->prev->next = head;
+    head->prev = head->prev->prev;
 
-    grade_free(head);
+    grade_free(temp);
 
-    return headstore;
+    return head;
 }
 
-grade_t *grade_remove(grade_t *something, int something2) // EXTRA CREDIT
+grade_t *grade_remove(grade_t *head, int cap) // EXTRA CREDIT
 {
     /*
     * This function should remove all grades from the grade list that are strictly less than
@@ -136,12 +135,21 @@ grade_t *grade_remove(grade_t *something, int something2) // EXTRA CREDIT
     * No print.
     */
 
-    something->next = something2; // temporary so this function doesnt mess me up
+    int remove;
 
-    return 0;
+    for (int i = 0; i <= cap; i++) {
+        remove = grade_search(head, i);
+        if (remove != NULL) {
+            grade_remove_first(remove); // cuz this sets the "head" to the one to be removed
+        }
+    }
+
+    // do I need to adjust the head before returning?
+
+    return head;
 }
 
-void *grades_print_ascending(grade_t *something) // TODO
+void *grades_print_ascending(grade_t *head)
 {
     /*
     * The function should print to stdout the grades in the grade list that are strictly less
@@ -152,9 +160,21 @@ void *grades_print_ascending(grade_t *something) // TODO
     * ex: grade list: 17, 10, 5
     * prints: 5, 10, 17
     */
+
+    grade_t *ptr = head->prev;
+
+    while (ptr->prev != head->prev) {
+        printf("%d ", ptr->grade);
+    }
+
+    ptr = ptr->prev;
+    printf("%d ", ptr->grade);
+    printf("\n");
+
+    return;
 }
 
-void *grades_print_descending(grade_t *something) // TODO
+void *grades_print_descending(grade_t *head)
 {
     /*
     * The function should print to stdout the grades in the grade list in descending order.
@@ -163,12 +183,25 @@ void *grades_print_descending(grade_t *something) // TODO
     * ex: grade list: 17, 10, 5
     *     prints: 17, 10, 5
     */
-}
+   
+    grade_t *ptr = head;
+    
+    while (ptr->next != head) {
+        printf("%d ", ptr->grade);
+    }
 
+    ptr = ptr->next;
+    printf("%d ", ptr->grade);
+    printf("\n");
+
+    return;
+}
+/*
 void grade_list_print(grade_t *list)
 {
     printf("%d\n", list->grade);
 }
+*/
 //////////////////////////////////////////////////////////////////////////////////////////
 //                                      END OF FILE                                     //
 //////////////////////////////////////////////////////////////////////////////////////////
