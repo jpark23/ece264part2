@@ -8,19 +8,21 @@
 
 #include "grade.h"
 
-grade_t *grade_alloc(int num_elements)
+grade_t *grade_alloc(int grad)
 {
-    /* allocates and initalizes a grade structure on the heap
-    returns a pointer to the allocated structure */
+    	/* allocates and initalizes a grade structure on the heap
+    	returns a pointer to the allocated structure */
 
-    grade_t *gradelist = malloc(num_elements * sizeof(grade_t));
+    	grade_t *gradelist = malloc(sizeof(grade_t));
 
-    gradelist->prev = NULL;
-    gradelist->next = NULL;
+	gradelist->grade = grad;
 
-    // error check?
+    	gradelist->prev = NULL;
+    	gradelist->next = NULL;
 
-    return gradelist;
+    	// error check?
+
+    	return gradelist;
 }
 
 void grade_free(grade_t *something)
@@ -94,8 +96,15 @@ grade_t *grade_remove_first(grade_t *head) // TODO
     */
 
     // loop through the list until we find the one to eliminate? no cause we want the first one
+    grade_t *first = head; // temporary storage
+    head->prev->next = head->next;
+    head->next->prev = head->prev;
+
+    first = head->next;
+
+    grade_free(head);
     
-    return head->next;
+    return first;
 }
 
 grade_t *grade_remove_last(grade_t *head)
@@ -108,7 +117,14 @@ grade_t *grade_remove_last(grade_t *head)
 
     // if it was next to remove the first one, than prev should be the last one
 
-    return head->prev;
+    grade_t *headstore = head;
+
+    head->prev->next = head->prev->prev->next;
+    head->prev->prev = head->prev;
+
+    grade_free(head);
+
+    return headstore;
 }
 
 grade_t *grade_remove(grade_t *something, int something2) // EXTRA CREDIT
