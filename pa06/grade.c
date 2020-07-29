@@ -135,9 +135,9 @@ grade_t *grade_remove(grade_t *head, int cap) // EXTRA CREDIT
     * No print.
     */
 
-    grade_t remove;
+    grade_t *remove;
 
-    for (int i = 0; i <= cap; i++) {
+    for (int i = 0; i < cap; i++) {
         remove = grade_search(head, i);
         if (remove != NULL) {
             grade_remove_first(remove); // cuz this sets the "head" to the one to be removed
@@ -196,12 +196,21 @@ void grades_print_descending(grade_t *head)
 
     return;
 }
-/*
-void grade_list_print(grade_t *list)
+
+void grade_list_print(grade_t *head)
 {
-    printf("%d\n", list->grade);
+    grade_t *ptr = head->prev;
+
+    while (ptr->prev != head->prev) {
+        printf("%d ", ptr->grade);
+    }
+
+    ptr = ptr->prev;
+    printf("%d ", ptr->grade);
+    printf("\n");
+
+    return;
 }
-*/
 //////////////////////////////////////////////////////////////////////////////////////////
 //                                      END OF FILE                                     //
 //////////////////////////////////////////////////////////////////////////////////////////
