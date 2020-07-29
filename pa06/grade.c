@@ -135,7 +135,7 @@ grade_t *grade_remove(grade_t *head, int cap) // EXTRA CREDIT
     * No print.
     */
 
-    int remove;
+    grade_t remove;
 
     for (int i = 0; i <= cap; i++) {
         remove = grade_search(head, i);
@@ -149,7 +149,7 @@ grade_t *grade_remove(grade_t *head, int cap) // EXTRA CREDIT
     return head;
 }
 
-void *grades_print_ascending(grade_t *head)
+void grades_print_ascending(grade_t *head)
 {
     /*
     * The function should print to stdout the grades in the grade list that are strictly less
@@ -174,7 +174,7 @@ void *grades_print_ascending(grade_t *head)
     return;
 }
 
-void *grades_print_descending(grade_t *head)
+void grades_print_descending(grade_t *head)
 {
     /*
     * The function should print to stdout the grades in the grade list in descending order.
