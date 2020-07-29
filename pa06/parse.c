@@ -17,15 +17,16 @@ grade_t *parse(char *filename)
      * you have to implement. None of the code in this function
      * matters for grading.
      */
-
+    
     // Generates the parse function
     FILE *fptr = fopen(filename, "r");
+    /*
     if (fptr == NULL) {
         return EXIT_FAILURE;
     }
-
-    // how many lines are in the file?
-    char ch;
+    */
+    // how many lines are in the file? - may wanna remove this
+    int ch;
     int numlines = 0;
 
     while ((ch = fgetc(fptr)) != EOF) {
@@ -35,11 +36,23 @@ grade_t *parse(char *filename)
     }
     rewind(fptr);
 
-    grade_t *gradelist = grade_alloc(numlines);
+    int grade;
+    fscanf(fptr, "%d", &grade);
+    grade_t *head = grade_alloc(grade);
 
     // add insert code here
+    do {
+        fscanf(fptr, "%d", &grade);
 
-    return gradelist;
+        if (feof(fptr)) 
+            break;
+
+        grade_t *insert = grade_alloc(grade);
+        grade_insert(head, insert);
+
+    } while (1);
+
+    return head;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 //                                      END OF FILE                                     //
