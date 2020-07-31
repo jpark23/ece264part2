@@ -20,21 +20,6 @@ grade_t *parse(char *filename)
     
     // Generates the parse function
     FILE *fptr = fopen(filename, "r");
-    /*
-    if (fptr == NULL) {
-        return EXIT_FAILURE;
-    }
-    */
-    // how many lines are in the file? - may wanna remove this
-    int ch;
-    int numlines = 0;
-
-    while ((ch = fgetc(fptr)) != EOF) {
-        if (ch == '\n') {
-            numlines++;
-        }
-    }
-    rewind(fptr);
 
     int grade;
     fscanf(fptr, "%d", &grade);

@@ -17,25 +17,19 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	grade_t *grade_list = parse(argv[1]);
+	grade_t *head = parse(argv[1]); 
 
     /*
      * Code that will play around with the grade list to test your functions
      * should go here. Test each function however you see fit. None of this
      * code matters for the grading. Only your functions' code do.
      */
-
-	// initalize loop var to first link
-	grade_t *ptr = grade_list;
-
-	while (ptr != NULL) {
-		grade_list_print(ptr);
-
-		// set loop var to next link
-		ptr = ptr->next;
-	}
-
-	grade_free(grade_list);
+	
+	// it dies here
+	grade_t *new = grade_alloc(4);
+	grades_print_descending(head);
+	grade_insert(head, new);
+	grades_print_descending(head);
 
 	return EXIT_SUCCESS;
 }

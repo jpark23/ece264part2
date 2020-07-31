@@ -44,11 +44,20 @@ grade_t *grade_insert(grade_t *head, grade_t *new)
     * No return. No print.
     */
 
-    //new->next = head;
-    //head = new;
+    // loop through searching for when new->grade < current->grade
+    grade_t *ptr = head;
 
-    new->prev = head;
-    head = new->next; // or head->next
+    do {
+        if (ptr->next == head || ptr->next == NULL) 
+            break;
+        if (ptr->grade < new->grade) { // means insert it after here
+            new->next = ptr;
+            ptr = new; // or new->next = ptr->next?
+            break;
+        }
+
+        ptr = ptr->next;
+    } while (1); 
 
     return head;
 }
@@ -186,14 +195,19 @@ void grades_print_descending(grade_t *head)
    
     grade_t *ptr = head;
     
-    while (ptr->next != head) {
+    while (1) {
+        if (ptr->next != head || ptr->next == NULL) {
+            printf("couldnt print\n");
+            break;
+        }
         printf("%d ", ptr->grade);
+        ptr = ptr->next;
     }
-
+    /*
     ptr = ptr->next;
     printf("%d ", ptr->grade);
     printf("\n");
-
+    */
     return;
 }
 
@@ -203,6 +217,7 @@ void grade_list_print(grade_t *head)
 
     while (ptr->prev != head->prev) {
         printf("%d ", ptr->grade);
+        ptr = ptr->prev;
     }
 
     ptr = ptr->prev;
