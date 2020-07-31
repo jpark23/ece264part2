@@ -33,7 +33,7 @@ grade_t *parse(char *filename)
             break;
 
         grade_t *insert = grade_alloc(grade);
-        grade_insert(head, insert);
+        head = grade_insert(head, insert);
 
     } while (1);
 

@@ -17,8 +17,8 @@ grade_t *grade_alloc(int grad)
 
 	gradelist->grade = grad;
 
-    gradelist->prev = NULL;
-    gradelist->next = NULL;
+    gradelist->prev = gradelist;
+    gradelist->next = gradelist;
 
     // error check?
 
@@ -43,7 +43,7 @@ grade_t *grade_insert(grade_t *head, grade_t *new)
     * updated list's head.
     * No return. No print.
     */
-
+    /*
     // loop through searching for when new->grade < current->grade
     grade_t *ptr = head;
 
@@ -60,8 +60,47 @@ grade_t *grade_insert(grade_t *head, grade_t *new)
 
         ptr = ptr->next;
     } while (1); 
+    */ // old way above
 
-    return head;
+    // is it the largest node
+    if (head->grade < new->grade) {
+        new->prev = head->prev;
+        new->next = head;
+        head->prev->next = new;
+        head->prev = new;
+        
+        return head;
+    }
+
+    // is it the smallest node
+    grade_t *last = head->prev;
+    if (last->grade > new->grade) {
+        new->next = head->next;
+        new->prev = head;
+        head->next = new;
+        head->next->prev = new;
+
+        return head;
+    }
+
+    grade_t *ptr = head;
+    while (ptr->grade > new->grade) {
+        if (ptr->grade < new->grade) { // means insert it after here
+            new->prev = ptr->prev;
+            new->next = ptr;
+            ptr->prev->next = new;
+            ptr->prev = new;
+            break;
+        }
+
+        ptr = ptr->next;
+    }
+
+    if (ptr == head) {
+        return new;
+    } else {
+        return head;
+    }
 }
 
 grade_t *grade_search(grade_t *head, int searchfor)
@@ -171,11 +210,12 @@ void grades_print_ascending(grade_t *head)
     * ex: grade list: 17, 10, 5
     * prints: 5, 10, 17
     */
-
+    
     grade_t *ptr = head->prev;
 
-    while (ptr->prev != head->prev) {
+    while (ptr->prev != head) {
         printf("%d ", ptr->grade);
+        ptr = ptr->prev;
     }
 
     ptr = ptr->prev;
@@ -197,19 +237,15 @@ void grades_print_descending(grade_t *head)
    
     grade_t *ptr = head;
     
-    while (1) {
-        if (ptr->next != head || ptr->next == NULL) {
-            printf("couldnt print\n");
-            break;
-        }
+    while (ptr->next != head) {
         printf("%d ", ptr->grade);
         ptr = ptr->next;
     }
-    /*
+    
     ptr = ptr->next;
     printf("%d ", ptr->grade);
     printf("\n");
-    */
+    
     return;
 }
 

@@ -27,8 +27,12 @@ int main(int argc, char *argv[])
 	
 	// it dies here
 	grade_t *new = grade_alloc(4);
+	printf("orig:\n");
 	grades_print_descending(head);
+	printf("ascending:\n");
+	grades_print_ascending(head);
 	grade_insert(head, new);
+	printf("added 4:\n");
 	grades_print_descending(head);
 
 	return EXIT_SUCCESS;
