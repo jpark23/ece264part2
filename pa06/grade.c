@@ -51,8 +51,10 @@ grade_t *grade_insert(grade_t *head, grade_t *new)
         if (ptr->next == head || ptr->next == NULL) 
             break;
         if (ptr->grade < new->grade) { // means insert it after here
+            new->prev = ptr->prev;
             new->next = ptr;
-            ptr = new; // or new->next = ptr->next?
+            ptr->prev->next = new;
+            ptr->prev = new;
             break;
         }
 
