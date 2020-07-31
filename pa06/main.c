@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	grades_print_descending(head);
 	printf("ascending:\n");
 	grades_print_ascending(head);
-	grade_insert(head, new);
+	head = grade_insert(head, new);
 	printf("added 4:\n");
 	grades_print_descending(head);
 

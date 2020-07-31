@@ -69,7 +69,7 @@ grade_t *grade_insert(grade_t *head, grade_t *new)
         head->prev->next = new;
         head->prev = new;
         
-        return head;
+        return new;
     }
 
     // is it the smallest node
@@ -190,7 +190,7 @@ grade_t *grade_remove(grade_t *head, int cap) // EXTRA CREDIT
     for (int i = 0; i < cap; i++) {
         remove = grade_search(head, i);
         if (remove != NULL) {
-            grade_remove_first(remove); // cuz this sets the "head" to the one to be removed
+            head = grade_remove_first(remove); // cuz this sets the "head" to the one to be removed
         }
     }
 
