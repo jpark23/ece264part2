@@ -39,7 +39,7 @@ void memory_init(void);
  *  Side effects    [The allocation tree is modified to keep track of any
  *                  allocation made from the heap array.]
  */
-byte *memory_alloc(size_t *);
+byte *memory_alloc(size_t );
 
 
 /*

@@ -25,6 +25,7 @@ static byte heap[HEAP_SIZE];
  */
 static node_t *root;
 
+byte *find_block(size_t size, node_t *tn);
 
 void memory_init(void)
 {
@@ -38,21 +39,72 @@ void memory_init(void)
 }
 
 
-byte *memory_alloc(size_t *size)
+byte *memory_alloc(size_t size)
 {
-    /*
-     * TODO:
-     *
-     *
-     */
+	// Compute most suitable block size
+	int order = ceil(log(size) / log(2));
+	size_t best = pow(2, order);
+
+	return find_block(best, root);	
 }
 
+byte *find_block(size_t size, node_t *tn)
+{
+	/* See 53:00 for implementation */
+	if (size <= tn->largest_block_left) {
+		if (tn->left == NULL) {
+			if (tn->largest_block_left == size) {
+				tn->largest_block_left = 0;
+				return tn->block_start_address; // this line is different for the right	
+			} else {
+				node_t *new = node_alloc();
+				/* THE BELOW LOGIC SHOULD BE A PART OF NODE_ALLOC()*/
+				new->block_start_address = tn->block_start_address; // different for right 
+				new->largest_block_left = tn->largest_block_left / 2;
+				new->largest_block_right = tn->largest_block_right / 2;
+				new->left = NULL;
+				new->right = NULL;
+				tn->left = new;
+				byte *addr = find_block(size, tn->left);
+				size_t max = tn->left->largest_block_left > tn->left->largest_block_right ? tn->left->largest_block_left : tn->left->largest_block_right;
+				tn->largest_block_left = max;i
+				return addr;
+				
+			}
+
+		} else {
+			// theres a node, theres a split
+			byte *addr = find_block(size, tn->left);
+			// update largest_block_left
+			size_t max = tn->left->largest_block_left > tn->left->largest_block_right ? tn->left->largest_block_left : tn->left->largest_block_right;
+			tn->largest_block_left = max;
+			return addr;
+		}
+	}	
+
+	else if (size <= tn->largest_block_right) {
+	
+	}
+
+	return NULL;
+}
 
 void memory_free(byte *address)
 {
     /*
      * TODO:
+     * base case where tn->largest_block_left back to original block size or something like that
+     * probably recursive
+     * which block does the block address connect to?
+     * based on the address, the block will be on the left or the right
+     * 	if not found, the address is invalid -> terminate
+     * find the block to free, free the block (largest_block_left/right to some value)
      *
+     * check if two nodes are buddies
+     * 	look at node that represents split
+     * 	if tn left and tn right is null
+     * 		on the left and right there are blocks, you can merge them
+     * 		to remove the split, remove the node
      *
      */
 }
