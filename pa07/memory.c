@@ -55,11 +55,11 @@ byte *find_block(size_t size, node_t *tn)
 		if (tn->left == NULL) {
 			if (tn->largest_block_left == size) {
 				tn->largest_block_left = 0;
-				return tn->block_start_address; // this line is different for the right	
+				return tn->block_start_address; 
 			} else {
 				node_t *new = node_alloc();
-				/* THE BELOW LOGIC SHOULD BE A PART OF NODE_ALLOC()*/
-				new->block_start_address = tn->block_start_address; // different for right 
+				/* THE BELOW LOGIC SHOULD BE A PART OF NODE_ALLOC()[?]*/
+				new->block_start_address = tn->block_start_address;
 				new->largest_block_left = tn->largest_block_left / 2;
 				new->largest_block_right = tn->largest_block_right / 2;
 				new->left = NULL;
@@ -67,7 +67,7 @@ byte *find_block(size_t size, node_t *tn)
 				tn->left = new;
 				byte *addr = find_block(size, tn->left);
 				size_t max = tn->left->largest_block_left > tn->left->largest_block_right ? tn->left->largest_block_left : tn->left->largest_block_right;
-				tn->largest_block_left = max;i
+				tn->largest_block_left = max;
 				return addr;
 				
 			}
@@ -83,7 +83,34 @@ byte *find_block(size_t size, node_t *tn)
 	}	
 
 	else if (size <= tn->largest_block_right) {
-	
+		if (tn->left == NULL) {
+			if (tn->largest_block_left == size) {
+				tn->largest_block_left = 0;
+				return tn->block_start_address + (size / 2); // this line is different for the right	- CHANGE THIS ONE
+			} else {
+				node_t *new = node_alloc();
+				/* THE BELOW LOGIC SHOULD BE A PART OF NODE_ALLOC()*/
+				new->block_start_address = tn->block_start_address + (size / 2); // different for right - CHANGE THIS ONE
+				new->largest_block_left = tn->largest_block_left / 2;
+				new->largest_block_right = tn->largest_block_right / 2;
+				new->left = NULL;
+				new->right = NULL;
+				tn->left = new;
+				byte *addr = find_block(size, tn->left);
+				size_t max = tn->left->largest_block_left > tn->left->largest_block_right ? tn->left->largest_block_left : tn->left->largest_block_right;
+				tn->largest_block_left = max;
+				return addr;
+				
+			}
+
+		} else {
+			// theres a node, theres a split
+			byte *addr = find_block(size, tn->left);
+			// update largest_block_left
+			size_t max = tn->left->largest_block_left > tn->left->largest_block_right ? tn->left->largest_block_left : tn->left->largest_block_right;
+			tn->largest_block_left = max;
+			return addr;
+		}
 	}
 
 	return NULL;
