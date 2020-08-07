@@ -6,8 +6,11 @@
 #include <errno.h>
 #include <string.h>
 
+#include "memory.h"
+
 int main(int argc, char *argv[])
 {
+    memory_init();
     return EXIT_SUCCESS;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
