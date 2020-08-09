@@ -22,11 +22,18 @@ int main(int argc, char *argv[])
      * Test your allocation and de-allocation functions here
      * by simply calling them in different sequences.
      */
+
+    init();
+
     int a = allocate_resource();
+    printf("a = 0x%x\n", a);
     int b = allocate_resource();
+    printf("b = 0x%x\n", b);
     int c = allocate_resource();
+    printf("c = 0x%x\n", c);
     deallocate_resource(b);
     int d = allocate_resource();
+    printf("d = 0x%x\n", d);
 
     // At this point, d should be equal to b!
 
